@@ -25,7 +25,6 @@ def get_numbers_until_equals():
             numbers.append(num)
         except ValueError: 
             print("Invalid input. Please enter a valid number.") 
-        continue
     return numbers
     
 def compute(operand, numbers):
@@ -46,6 +45,19 @@ def compute(operand, numbers):
         return int(result)
     return result
 
+def choice():
+    
+    while True:
+        again = input("Do you want to try again? (y/n): ").lower().strip()
+        if again == "y":
+            return True
+        elif again == "n":
+            return False
+        else:
+            print("Please enter a valid answer (Y/N)")
+            continue
+    
+
 def main():
 
     print("------------------------------\nHello there! Welcome to CLI Calculator tool that offers basic operations.\n------------------------------\n")
@@ -53,22 +65,23 @@ def main():
     while True:
         operand = get_operation()
         numbers = get_numbers_until_equals()
-        result = compute(operand, numbers)
+        if operand in ["+", "*"] and len(numbers) >= 1:
+            result = compute(operand, numbers)
+        elif operand in ["-", "/"] and len(numbers) >= 2:
+            result = compute(operand, numbers)
+        else:
+            print("Not enough numbers for this operation! Try again.")
+            continue
     
         clean_numbers = [int(n) if n.is_integer() else n for n in numbers]
         print(f"\nNumbers: {clean_numbers}")
         print(f"Operation: '{operand}'")
         print(f"Result: {result}\n\n")
     
-        again = input("Do you want to try again? (y/n): ").lower().strip()
-        if again == "y":
-            continue
-        elif again == "n":
+        again = choice()
+        if not again:
             print("Thank you for using the program!")
-            break
-        else:
-            print("Please enter 'y' or 'n'.")
-            continue
+            break        
     
 
 if __name__ == "__main__":
